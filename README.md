@@ -1,5 +1,12 @@
-# 📌 Universo Literário
+<<<<<<< HEAD
 
+# Documentação
+📝 Repositório com o modelo oficial de documentação do grupo. Serve como guia para padronizar README.md, contribuição, tecnologias e autores em nossos projetos, facilitando a colaboração, a manutenção e a compreensão dos repositórios no GitHub.
+
+
+# 📌 Nome do Projeto
+
+>>>>>>> js
 > Breve descrição do projeto: objetivo, problema que resolve ou proposta de valor.  
 
 ---
@@ -89,10 +96,12 @@ Faça o push: git push origin minha-feature
 Abra um Pull Request
 
 ## 👨‍💻 Autores
+<<<<<<< HEAD
 Jéssica Mendes |	Dev Jr.	@jhesslima
 André Koch | Dev @dedex9
 Lucas Mantovani | Dev @lucasmantovanii
 Thalis Nascimento | Dev @thalisvn
+
 
 ## 📜 Licença
 
