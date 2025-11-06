@@ -1,10 +1,15 @@
+*{
+    margin: 0;
+}
+
 body {
     font-family: inter, sans-serif;
     font-weight: 500;
+    font-weight: 1em ;
     margin: 0;
     padding: 0;
     background-color: #171717;
-    color: #c0c0c0; 
+    color: #171717; 
 }
 .menu {
     background-color: #800020;
@@ -48,15 +53,13 @@ body {
     height: 368px; 
     display: flex;
     justify-content: center;
-    align-items: center;     
-    border-top: 5px solid #800000;
-    border-bottom: 5px solid #800000;
+    align-items: center;
 }
 
 .banner h1 {
     color: #FFD700;
-    font-family: Cormorant Garamond, Times, serif;
-    font-size: 4em; 
+    font-family: 'Cormorant Garamond', Times, serif;
+    font-size: 4.8em; 
     font-weight: bold;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8); 
     margin: 0; 
@@ -65,10 +68,77 @@ body {
 
 .content-section {
     margin: 0 300px;
+    padding:0;
+}
+
+.content{
+    background-color: #C0C0C0;
+    margin: auto 300px;
+}
+
+.title {
+    font-family: 'Cormorant Garamond', Times, serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.text{
+    font-size: 16px;
+    font-weight: 500;
+    padding: 5px 10px;
+}
+.card-book{
+    display: flex;
+    align-items: flex-center;
+    gap: 20px;
+    background-color: #E2E2E2;
+    border: #800020 solid 2px;
+    color: #171717;
+    padding: 10px;
+    margin: 50px 10px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-book:hover {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+    transform: translateY(-4px);
+    transition: all 0.3s ease;
 }
 
 
+.book-cover img {
+    width: 200px;                /* Tamanho fixo ou ajustável */
+    height: auto;
+    border-radius: 8px;
+}
+
+.content-book {
+    display: flex;
+    flex-direction: column;     
+    justify-content: space-evenly;
+}
+
+.content-book h2 {
+    font-size: 1.66em;
+    margin-top: 0;
+}
+
+.Learn-more {
+    color: #800020;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.Learn-more:hover {
+    text-decoration: underline;
+}
+
 footer{
+    font-size: 0.875em;
     background-color: #800020;
     color: #D9B700;
     padding: 10px;
