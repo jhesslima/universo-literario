@@ -2,6 +2,11 @@
     margin: 0;
 }
 
+section{
+    margin: 0;
+    padding: 10px 0;
+}
+
 body {
     font-family: inter, sans-serif;
     font-weight: 500;
@@ -78,13 +83,14 @@ body {
 
 .title {
     font-family: 'Cormorant Garamond', Times, serif;
-    font-size: 2.5em;
+    font-size: 3em;
     font-weight: bold;
     padding: 10px;
 }
 
 .text{
-    font-size: 16px;
+    text-indent: 1em;
+    font-size: 1em;
     font-weight: 500;
     padding: 5px 10px;
 }
@@ -125,17 +131,27 @@ body {
     margin-top: 0;
 }
 
+.summary{
+    text-indent: 1em;
+    font-size: 1em;
+    padding: 5px;
+}
+
 .Learn-more {
     color: #800020;
     text-decoration: none;
     font-weight: bold;
-    margin-top: 10px;
+    margin: 10px;
+    padding: 5px;
     cursor: pointer;
+    align-self: flex-end;
 }
 
 .Learn-more:hover {
     text-decoration: underline;
 }
+
+/* Contato*/
 
 footer{
     font-size: 0.875em;

@@ -122,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicialização
     const initialSection = window.location.hash || '#Home';
     showSection(initialSection);
-    atualizarContadorVisitas(); // Chamada da função que você definiu (deve estar em outro lugar)
 
     window.addEventListener('popstate', () => {
         showSection(window.location.hash);
