@@ -110,6 +110,7 @@ body {
     font-weight: 500;
     align-items: center;
     justify-content: center;
+    text-align: center ;
     line-height: 1.3;
 }
 
@@ -122,6 +123,7 @@ body {
 
 .text{
     text-indent: 1em;
+    text-align: justify;
     font-size: 1em;
     font-weight: 500;
     padding: 5px 10px;
