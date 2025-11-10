@@ -20,6 +20,10 @@ body {
     align-items: center;
 }
 
+.logo{
+    max-height: 50px;
+}
+
 .nav-links {
     display: flex;
     padding-right: 20px; 
@@ -68,7 +72,7 @@ body {
 }
 
 .content-section {
-    margin: 0 18.75em;
+    margin: 40em;
     padding:0;
 }
 
