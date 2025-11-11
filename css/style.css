@@ -2,6 +2,12 @@
     margin: 0;
 }
 
+#app-content {
+    flex-grow: 1; 
+    display: flex; 
+    flex-direction: column;
+}
+
 body {
     font-family: inter, sans-serif;
     font-weight: 500;
@@ -10,7 +16,10 @@ body {
     padding: 0;
     background-color: #171717;
     color: #171717; 
-    min-height: 100vh;
+    min-height: 100vh; 
+    
+    display: flex;
+    flex-direction: column;
 }
 .menu {
     background-color: #800020;
@@ -81,6 +90,8 @@ body {
     background-color: #C0C0C0;
     margin: auto 18.75em;
     padding-bottom: 10px;
+    flex-grow: 1;
+    min-height: 100%; 
 }
 
 .informations{
