@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     function showLoading(targetSection) {
         if (targetSection) {
-             // Adiciona um spinner/mensagem simples
             targetSection.innerHTML = '<div class="loading-spinner">Carregando...</div>'; 
             targetSection.classList.add('loading');
         }
