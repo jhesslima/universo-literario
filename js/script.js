@@ -299,4 +299,23 @@ document.addEventListener('DOMContentLoaded', () => {
         const sectionId = window.location.hash || '#Home';
         showSection(sectionId);
     });
+
+    // Validação simples do formulário de contato
+    
+    document.addEventListener('submit', function (e) {
+    const form = e.target;
+    if (!form.classList.contains('contact-form')) return;
+
+    e.preventDefault();
+
+    const required = form.querySelectorAll('input[required], textarea[required]');
+    const allFilled = Array.from(required).every(el => el.value.trim() !== '');
+
+    if (allFilled) {
+        alert('Mensagem enviada com sucesso');
+        form.reset();
+    } else {
+        alert('Preencha todos os campos');
+    }
+    });
 });
