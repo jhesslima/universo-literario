@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const contentCache = {};
+    // mantém a URL base de onde cada seção foi carregada (para resolver hrefs relativos)
+    const contentBaseBySection = {};
     
     // Seções de conteúdo devem estar dentro de um container principal
     // Exemplo: <div id="app-content"> <section class="content" id="Home">...</section> </div>
@@ -29,13 +31,17 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             // Remove o '#' para formar o nome do arquivo
             const fileName = sectionId.substring(1); 
-            const response = await fetch(`html/${fileName}.html`);
+            const fetchUrl = `html/${fileName}.html`;
+            const response = await fetch(fetchUrl);
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             
             const html = await response.text();
+
+            // armazena a URL base usada para resolver links relativos dentro desta seção
+            try { contentBaseBySection[sectionId] = response.url || new URL(fetchUrl, location.href).href; } catch (e) { contentBaseBySection[sectionId] = new URL(fetchUrl, location.href).href; }
             
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
@@ -115,8 +121,161 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Delegation: quando clicar em links .Learn-more, carregar a resenha dentro do index
+    document.addEventListener('click', async (e) => {
+        const a = e.target.closest('a.Learn-more');
+        if (!a) return; // não é um link de resenha
+
+        const href = a.getAttribute('href');
+        if (!href) return;
+        // Resolve href relative à seção pai (se conhecida) para suportar links como "resenhas/arquivo.html"
+        let baseForResolve = location.href;
+        const parentSection = a.closest('section.content');
+        if (parentSection && parentSection.id) {
+            const parentKey = `#${parentSection.id}`;
+            if (contentBaseBySection[parentKey]) baseForResolve = contentBaseBySection[parentKey];
+        }
+        const url = new URL(href, baseForResolve).href;
+
+        // Se for uma resenha (path contendo 'resenhas'), carregamos via DOM no estilo das sections
+        if (href.includes('resenhas')) {
+            e.preventDefault();
+
+            console.debug('[resenha] clique detectado, href=', href, 'resolved=', url);
+
+            // derive nome do arquivo para criar um id único
+            const fileName = url.split('/').pop().replace(/\.html?$/i, '');
+            const sectionId = `#resenha-${fileName}`;
+
+            // cria a section no DOM se ainda não existir
+            let target = document.getElementById(sectionId.slice(1));
+            if (!target) {
+                target = document.createElement('section');
+                target.id = sectionId.slice(1);
+                target.className = 'content';
+                // opcional: inserir ao final do container de conteúdo
+                contentContainer.appendChild(target);
+            }
+
+            // se já carregamos antes, apenas mostramos
+            if (contentCache[sectionId]) {
+                console.debug('[resenha] usando cache para', sectionId);
+                try {
+                    await showSection(sectionId);
+                    history.pushState(null, null, sectionId);
+                } catch (err) {
+                    console.error('[resenha] erro ao mostrar seção cached', sectionId, err);
+                }
+                return;
+            }
+
+            // mostra loading e busca o arquivo
+            showLoading(target);
+            try {
+                console.debug('[resenha] iniciando fetch de', url);
+                const res = await fetch(url);
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                console.debug('[resenha] fetch ok', url, 'status=', res.status);
+                const text = await res.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(text, 'text/html');
+
+                // preferir <section id=...> ou .content ou <main>
+                const remoteSection = doc.querySelector('section') || doc.querySelector('.content') || doc.querySelector('main') || doc.body;
+                const inner = remoteSection ? remoteSection.innerHTML : text;
+
+                // cacheia com chave igual ao sectionId usado pelo showSection
+                contentCache[sectionId] = inner;
+                hideLoading(target);
+
+                // exibe a seção (reaproveita showSection)
+                try {
+                    await showSection(sectionId);
+                    // atualiza o histórico para permitir voltar
+                    history.pushState(null, null, sectionId);
+                } catch (err) {
+                    console.error('[resenha] erro ao mostrar seção após fetch', sectionId, err);
+                    target.innerHTML = '<p>Erro ao exibir a resenha. Veja o console.</p>';
+                }
+
+            } catch (err) {
+                hideLoading(target);
+                console.error('Erro ao carregar resenha via DOM:', err);
+                target.innerHTML = `<p>Não foi possível carregar a resenha. Verifique o console para mais detalhes.</p>`;
+            }
+
+            return;
+        }
+
+        // Caso contrário, para outros Learn-more, manter comportamento anterior (overlay)
+        e.preventDefault();
+        try {
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const text = await res.text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, 'text/html');
+
+            // tenta extrair o conteúdo principal (main ou section)
+            const remoteMain = doc.querySelector('main') || doc.querySelector('section') || doc.body;
+
+            // cria/obtém overlay
+            let overlay = document.getElementById('resenha-overlay');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'resenha-overlay';
+                // estilos básicos inline para não depender do CSS
+                overlay.style.position = 'fixed';
+                overlay.style.inset = '0';
+                overlay.style.background = 'rgba(0,0,0,0.75)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
+                overlay.innerHTML = `
+                    <div class="resenha-box" style="background:#fff;color:#111;max-width:900px;width:90%;max-height:90%;overflow:auto;border-radius:8px;padding:20px;position:relative;">
+                        <button class="resenha-close" style="position:absolute;right:12px;top:12px;padding:6px 10px;">Fechar</button>
+                        <div class="resenha-content"></div>
+                    </div>`;
+                document.body.appendChild(overlay);
+
+                // handlers de fechamento
+                overlay.querySelector('.resenha-close').addEventListener('click', () => {
+                    overlay.style.display = 'none';
+                    document.body.style.overflow = '';
+                });
+                // fechar ao clicar no backdrop
+                overlay.addEventListener('click', (ev) => {
+                    if (ev.target === overlay) {
+                        overlay.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+                // ESC fecha
+                window.addEventListener('keydown', (ev) => {
+                    if (ev.key === 'Escape' && overlay.style.display === 'flex') {
+                        overlay.style.display = 'none';
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+
+            // injeta o conteúdo da resenha
+            const container = overlay.querySelector('.resenha-content');
+            container.innerHTML = remoteMain ? remoteMain.innerHTML : text;
+            overlay.style.display = 'flex';
+            // evita scroll do body enquanto overlay aberto
+            document.body.style.overflow = 'hidden';
+
+        } catch (err) {
+            console.error('Erro ao carregar resenha:', err);
+            alert('Não foi possível carregar a resenha. Verifique se o servidor está rodando.');
+        }
+    });
+
     window.addEventListener('scroll', () => {
-        document.querySelector('.nav-links').classList.remove('active');
+        const nav = document.querySelector('.nav-links');
+        if (nav) nav.classList.remove('active');
     });
 
     // --- SEÇÃO CORRIGIDA ---
