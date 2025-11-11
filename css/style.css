@@ -37,7 +37,7 @@ body {
 .nav-links {
     display: flex;
     padding-right: 20px; 
-    margin-right: 300px;
+    margin-right: 70px;
 }
 
 
@@ -88,7 +88,7 @@ body {
 
 .content{
     background-color: #C0C0C0;
-    margin: auto 18.75em;
+    margin: auto 5em;
     padding-bottom: 10px;
     flex-grow: 1;
     min-height: 100%; 
@@ -138,11 +138,25 @@ body {
 }
 
 .text{
-    text-indent: 1em;
+    text-indent: 0;
     text-align: justify;
     font-size: 1em;
     font-weight: 500;
     padding: 5px 10px;
+}
+
+/* Página Home */
+
+#home-title {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#subtitle-home {
+    text-align: center;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    font-size: 46px;
 }
 
 .card-book{
@@ -182,8 +196,14 @@ body {
     margin-top: 0;
 }
 
+.author {
+    text-indent: 0;
+    font-size: 1em;
+    padding: 5px;
+}
+
 .summary{
-    text-indent: 1em;
+    text-indent: 0;
     font-size: 1em;
     padding: 5px;
 }
@@ -257,6 +277,7 @@ body {
 
 /* --- Rodapé --- */
 footer {
+
     font-size: 0.875em;
     background-color: #800020;
     color: #D9B700;
@@ -264,6 +285,4 @@ footer {
     text-align: center;
     border-top: 5px solid #D9B700;
     margin-top: auto;
-    
 }
-
