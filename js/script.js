@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-
     async function loadSectionContent(sectionId) {
         // Se já está em cache, retorna rapidamente
         if (contentCache[sectionId]) return; 
@@ -58,18 +57,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function showSection(sectionId) {
-        const targetSection = document.querySelector(sectionId);
+        // CORREÇÃO PREVENTIVA: Se por algum motivo o sectionId for vazio, usa #Home
+        const validSectionId = sectionId || '#Home';
+        const targetSection = document.querySelector(validSectionId);
 
         if (!targetSection) {
-            console.warn(`Seção não encontrada no DOM: ${sectionId}`);
+            console.warn(`Seção não encontrada no DOM: ${validSectionId}`);
             return;
         }
 
         // 1. Otimização na Limpeza: Remove a classe 'active' de todas as seções e esvazia o conteúdo.
-        // O código original limpava *todos* os elementos com a classe .content, o que pode ser demais.
-        // O ideal é remover a classe 'active' do item atualmente ativo.
         document.querySelectorAll('.content.active').forEach(section => {
-             // Limpa o conteúdo *apenas* se estiver ativo (opcional, mas economiza memória)
             section.innerHTML = ''; 
             section.classList.remove('active');
         });
@@ -78,36 +76,38 @@ document.addEventListener('DOMContentLoaded', () => {
         showLoading(targetSection);
 
         // 3. Aguarda o carregamento do conteúdo (ou uso do cache)
-        await loadSectionContent(sectionId);
+        await loadSectionContent(validSectionId);
         
         // 4. Remove o loading e insere o conteúdo
         hideLoading(targetSection);
-        targetSection.innerHTML = contentCache[sectionId];
+        targetSection.innerHTML = contentCache[validSectionId];
         targetSection.classList.add('active');
         
         // 5. Atualiza o estado da navegação
         document.querySelectorAll('.nav-links a').forEach(link => {
-            link.classList.toggle('active', link.getAttribute('href') === sectionId);
+            link.classList.toggle('active', link.getAttribute('href') === validSectionId);
         });
     }
 
-
-    // Restante do código (Event listeners, Menu, Inicialização) permanece o mesmo, pois está correto.
-
-    // Event listeners
+    // Event listeners (Links de Navegação)
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', async (e) => {
             e.preventDefault();
             const sectionId = link.getAttribute('href');
             await showSection(sectionId);
+            // 'pushState' adiciona ao histórico do navegador
             history.pushState(null, null, sectionId);
         });
     });
 
-    // Menu Hamburguer
-    document.querySelector('.menu-icon').addEventListener('click', () => {
-        document.querySelector('.nav-links').classList.toggle('active');
-    });
+    // Menu Hamburguer (se existir no DOM)
+    const menuIcon = document.querySelector('.menu-icon');
+    if (menuIcon) {
+        menuIcon.addEventListener('click', () => {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks) navLinks.classList.toggle('active');
+        });
+    }
 
     document.addEventListener('click', (e) => {
         if (!e.target.closest('.nav-links') && !e.target.closest('.menu-icon')) {
@@ -119,11 +119,25 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.nav-links').classList.remove('active');
     });
 
+    // --- SEÇÃO CORRIGIDA ---
+
     // Inicialização
+    // Garante que, se o hash for vazio (""), ele use '#Home' como padrão.
     const initialSection = window.location.hash || '#Home';
     showSection(initialSection);
 
+    // MELHORIA: Se o usuário acessou 'index.html' (sem hash),
+    // atualiza a URL para 'index.html#Home' sem recarregar a página.
+    if (window.location.hash !== initialSection) {
+        // 'replaceState' atualiza a URL sem criar uma nova entrada no histórico
+        history.replaceState(null, null, initialSection);
+    }
+
+    // Evento para botões "voltar" e "avançar" do navegador
     window.addEventListener('popstate', () => {
-        showSection(window.location.hash);
+        // CORREÇÃO: Garante que, se o hash ficar vazio (ex: voltou para a raiz),
+        // ele carregue a #Home, e não uma seção vazia.
+        const sectionId = window.location.hash || '#Home';
+        showSection(sectionId);
     });
 });
