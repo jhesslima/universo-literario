@@ -391,7 +391,7 @@ body {
 /* Resenhas*/
 
 .about-book {
-    width: 100%;
+    width: 855px;
     padding: 10px;
     margin: 20px 250px;
     font-family: 'Inter', sans-serif;
@@ -407,7 +407,8 @@ body {
 .book-content-wrapper {
     display: flex; 
     gap: 25px;
-    align-items: flex-start; 
+    align-items: flex-start;
+    max-width: 900px; 
 }
 
 
@@ -447,7 +448,7 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  max-width: 1400px;
+  max-width: 1000px;
   margin: 30px auto;
   justify-items: center;
 }
