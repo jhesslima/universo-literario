@@ -16,6 +16,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Normaliza hashes/ids: remove .html e tenta encontrar id com case-insensitive
+    function normalizeSectionId(hashOrId) {
+        if (!hashOrId) return '#Home';
+        let id = hashOrId.startsWith('#') ? hashOrId.slice(1) : hashOrId;
+        id = id.replace(/\.html?$/i, '');
+        // se existir id exato
+        if (document.getElementById(id)) return `#${id}`;
+        // procurar case-insensitive entre sections
+        const secs = Array.from(document.querySelectorAll('main section, section.content'));
+        const lower = id.toLowerCase();
+        for (const s of secs) {
+            if (!s.id) continue;
+            if (s.id.toLowerCase() === lower) return `#${s.id}`;
+        }
+        // tentar capitalizar primeira letra
+        const cap = id.charAt(0).toUpperCase() + id.slice(1);
+        if (document.getElementById(cap)) return `#${cap}`;
+        return `#${id}`;
+    }
+
     async function loadSectionContent(sectionId) {
         if (contentCache[sectionId]) return; 
         
@@ -212,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    const initialSection = window.location.hash || '#Home';
+    const initialSection = normalizeSectionId(window.location.hash || '#Home');
     showSection(initialSection);
 
     if (window.location.hash !== initialSection) {
@@ -220,7 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     window.addEventListener('popstate', () => {
-        const sectionId = window.location.hash || '#Home';
+        const sectionId = normalizeSectionId(window.location.hash || '#Home');
         showSection(sectionId);
     });
 });
