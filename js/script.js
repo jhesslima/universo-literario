@@ -29,8 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (contentCache[sectionId]) return; 
         
         try {
-            // Remove o '#' para formar o nome do arquivo
-            const fileName = sectionId.substring(1); 
+
+            let fileName = sectionId.substring(1);
+            if (fileName.startsWith('resenha-')) {
+                const slug = fileName.replace(/^resenha-/, '');
+                fileName = `resenhas/${slug}`;
+            }
             const fetchUrl = `html/${fileName}.html`;
             const response = await fetch(fetchUrl);
             
@@ -47,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const doc = parser.parseFromString(html, 'text/html');
             
             // Tenta obter o conteúdo da classe '.content'
-            const contentElement = doc.querySelector('.content');
+            const contentElement = doc.querySelector('.content') || doc.querySelector('section') || doc.querySelector('main') || doc.body;
             if (contentElement) {
                 contentCache[sectionId] = contentElement.innerHTML;
             } else {
@@ -65,11 +69,19 @@ document.addEventListener('DOMContentLoaded', () => {
     async function showSection(sectionId) {
         // CORREÇÃO PREVENTIVA: Se por algum motivo o sectionId for vazio, usa #Home
         const validSectionId = sectionId || '#Home';
-        const targetSection = document.querySelector(validSectionId);
+        let targetSection = document.querySelector(validSectionId);
 
         if (!targetSection) {
-            console.warn(`Seção não encontrada no DOM: ${validSectionId}`);
-            return;
+            if (validSectionId.startsWith('#resenha-')) {
+                const id = validSectionId.slice(1);
+                targetSection = document.createElement('section');
+                targetSection.id = id;
+                targetSection.className = 'content';
+                contentContainer.appendChild(targetSection);
+            } else {
+                console.warn(`Seção não encontrada no DOM: ${validSectionId}`);
+                return;
+            }
         }
 
         // 1. Otimização na Limpeza: Remove a classe 'active' de todas as seções e esvazia o conteúdo.
