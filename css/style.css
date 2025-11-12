@@ -151,7 +151,6 @@ body {
 }
 
 .text{
-    text-indent: 0;
     text-align: justify;
     font-size: 1.25em;
     font-weight: 500;
@@ -391,7 +390,8 @@ body {
 /* Resenhas*/
 
 .about-book {
-    width: 100%;
+    display: column;
+    max-width: 100%;
     padding: 10px;
     margin: 20px 250px;
     font-family: 'Inter', sans-serif;
@@ -407,29 +407,29 @@ body {
 .book-content-wrapper {
     display: flex; 
     gap: 25px;
-    align-items: flex-start; 
+    align-items: flex-start;
+    width: 100%; 
 }
 
 
 .book-content-wrapper img {
     width: 250px;
-    height: auto; 
+    height: 100%; 
     flex-shrink: 0; 
-    border-radius: 10px; 
+    border-radius: 10px;; 
 }
 
 
 .book-details {
+    width: auto;
     flex-grow: 1;
     font-size: 1em;
     line-height: 1.5;
 }
 
 .book-details p {
-    max-width: 910px;
     font-size: 1.25em;
     text-align: justify;
-    white-space: pre-wrap;
     margin-top: 0; 
     line-height: 1.6;
 }
@@ -447,7 +447,7 @@ body {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;
-  max-width: 1400px;
+  max-width: 1000px;
   margin: 30px auto;
   justify-items: center;
 }
