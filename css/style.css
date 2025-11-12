@@ -140,7 +140,7 @@ body {
     font-family: 'Cormorant Garamond', Times, serif;
     font-size: 3em;
     font-weight: bold;
-    padding: 10px;
+    padding: 10px 250px;
 }
 
 .subtitle {
@@ -153,9 +153,9 @@ body {
 .text{
     text-indent: 0;
     text-align: justify;
-    font-size: 1em;
+    font-size: 1.25em;
     font-weight: 500;
-    padding: 5px 10px;
+    padding: 5px 250px;
 }
 
 .list {
@@ -179,6 +179,169 @@ body {
     font-size: 46px;
 }
 
+.informations {
+    justify-content: center;
+}
+
+.benefits-container {
+    display: flex;
+    justify-content: center; 
+    background-color: #c0c0c0; 
+    max-width: 1000px;
+    margin: 20px auto;
+}
+
+.benefit-item {
+
+    padding: 20px 30px;
+    max-width: 300px;
+}
+
+.benefit-item h3 {
+    color: #333;
+    text-align: center;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.benefit-item p {
+    font-size: 1.25em;
+    text-align: center;
+    color: #444;
+    line-height: 1.6;
+    margin: 0;
+}
+/* flip cards*/
+
+/* --- 1. O CONTAINER QUE ALINHA OS CARDS LADO A LADO --- */
+.card-section {
+    display: flex;             /* Coloca os itens em linha */
+    justify-content: center;   /* Centraliza os 3 cards como um grupo */
+    flex-wrap: wrap;           /* Permite que quebrem a linha em telas pequenas */
+    gap: 20px;                 /* Espaço entre os cards */
+    
+    /* Isso garante o alinhamento com o .benefits-container */
+    max-width: 1000px;
+    margin: 20px auto;         /* Centraliza o container na página */
+}
+
+/* --- 2. Estilos para o Flip Card --- */
+
+/* 2.1. O CONTAINER PRINCIPAL (define o espaço) */
+.flip-card {
+    background-color: transparent;
+    /* Define o tamanho do card - AJUSTE A ALTURA CONFORME PRECISAR */
+    width: 300px;
+    height: 400px;
+    /* Isso ativa o efeito 3D */
+    perspective: 1000px; 
+    /* Garante que ele se alinhe com os outros cards no flexbox */
+    flex-basis: 300px;
+    flex-grow: 0;
+}
+
+/* 2.2. O CONTAINER INTERNO (que gira) */
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    /* Define a velocidade da animação */
+    transition: transform 0.6s;
+    /* Isso preserva o 3D */
+    transform-style: preserve-3d;
+}
+
+/* 2.3. A MÁGICA: Ao passar o mouse no card, gire o container interno */
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+/* 2.4. OS DOIS LADOS (FRENTE E VERSO) */
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    /* Isso esconde o lado que está "atrás" */
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    
+    /* Estilos dos seus cards */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden; /* Para a imagem não vazar das bordas */
+}
+
+/* 2.5. ESTILOS DA FRENTE (IMAGEM) */
+.flip-card-front {
+    background-color: #E2E2E2;
+    color: #171717;
+}
+
+.flip-card-front img {
+    width: 100%;
+    height: 100%; /* Faz a imagem cobrir o card todo */
+    object-fit: cover; /* Cobre o espaço sem distorcer */
+}
+
+/* Título opcional sobre a imagem */
+.flip-card-front h3 {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white!important; /* !important para sobrescrever regras */
+    background-color: rgba(0,0,0,0.5);
+    padding: 5px 15px;
+    border-radius: 5px;
+}
+
+
+/* 2.6. ESTILOS DO VERSO (TEXTO) */
+.flip-card-back {
+    /* Cor de fundo do seu site */
+    background-color: #800020; 
+    /* Cor do texto do seu site */
+    color: #C0C0C0; 
+    /* Começa "virado" */
+    transform: rotateY(180deg);
+    
+    /* Alinhamento do texto */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box; /* Garante que o padding não quebre o layout */
+}
+
+.flip-card-back h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+.flip-card-back p {
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+/* Reutilizando a classe .Learn-more (com a cor do seu rodapé) */
+.flip-card-back .Learn-more {
+    color: #D9B700; 
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+    justify-self: center;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.flip-card-back .Learn-more:hover {
+    text-decoration: underline;
+}
+
+/* paginas de generos*/
 .card-book{
     display: flex;
     align-items: flex-center;
@@ -187,7 +350,7 @@ body {
     border: #800020 solid 2px;
     color: #171717;
     padding: 10px;
-    margin: 50px 10px;
+    margin: 50px 250px;
     border-radius: 10px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
 }
@@ -241,6 +404,48 @@ body {
 .Learn-more:hover {
     text-decoration: underline;
 }
+/* Resenhas*/
+/* Container principal - opcional, mas bom para limitar a largura */
+.about-book {
+    width: 100%;
+    padding: 10px; /* Exemplo: limita a largura total */
+    margin: 20px auto; /* Centraliza o bloco */
+    font-family: Arial, sans-serif; /* Fonte legível */
+}
+
+/* Estiliza o título */
+.about-book h1 {
+    font-size: 2em; /* Tamanho do título */
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+/* Este é o container que cria as duas colunas */
+.book-content-wrapper {
+    display: flex; 
+    gap: 25px;
+    align-items: flex-start; 
+}
+
+
+.book-content-wrapper img {
+    width: 200px;
+    height: auto; 
+    flex-shrink: 0; 
+    border-radius: 10px; 
+}
+
+
+.book-details {
+    flex-grow: 1;
+    font-size: 1em;
+    line-height: 1.5;
+}
+
+.book-details p {
+    margin-top: 0; 
+    line-height: 1.6;
+}
 
 /* Contato */
 
@@ -260,7 +465,7 @@ body {
     width: 100%;
     max-width: 600px;
     padding: 20px;
-    margin: 0 auto; /* Centraliza o formulário dentro do bloco .content */
+    margin: 0 auto; 
 }
 
 .contact-form input,

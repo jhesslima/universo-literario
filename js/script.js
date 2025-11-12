@@ -91,7 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', async (e) => {
             e.preventDefault();
-            const sectionId = link.getAttribute('href');
+            const raw = link.getAttribute('href');
+            const sectionId = normalizeSectionId(raw);
             await showSection(sectionId);
             history.pushState(null, null, sectionId);
         });
@@ -123,7 +124,24 @@ document.addEventListener('DOMContentLoaded', () => {
             const parentKey = `#${parentSection.id}`;
             if (contentBaseBySection[parentKey]) baseForResolve = contentBaseBySection[parentKey];
         }
-        const url = new URL(href, baseForResolve).href;
+        let resolvedUrlObj, url;
+        try {
+            resolvedUrlObj = new URL(href, baseForResolve);
+            url = resolvedUrlObj.href;
+            // Se for hash interno na mesma página (ex.: '#Fantasia' ou 'index.html#Fantasia'),
+            // tratamos como link da navbar
+            if (resolvedUrlObj.origin === location.origin && resolvedUrlObj.pathname === location.pathname && resolvedUrlObj.hash) {
+                e.preventDefault();
+                const sectionId = normalizeSectionId(resolvedUrlObj.hash);
+                await showSection(sectionId);
+                history.pushState(null, null, sectionId);
+                return;
+            }
+        } catch (err) {
+            // falha ao resolver URL; continua com lógica padrão
+            console.debug('Falha ao resolver URL para', href, err);
+            url = href;
+        }
 
         if (href.includes('resenhas')) {
             e.preventDefault();
@@ -185,61 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        e.preventDefault();
-        try {
-            const res = await fetch(url);
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-            const text = await res.text();
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-
-            const remoteMain = doc.querySelector('main') || doc.querySelector('section') || doc.body;
-
-            let overlay = document.getElementById('resenha-overlay');
-            if (!overlay) {
-                overlay = document.createElement('div');
-                overlay.id = 'resenha-overlay';
-                overlay.style.position = 'fixed';
-                overlay.style.inset = '0';
-                overlay.style.background = 'rgba(0,0,0,0.75)';
-                overlay.style.display = 'flex';
-                overlay.style.alignItems = 'center';
-                overlay.style.justifyContent = 'center';
-                overlay.style.zIndex = '9999';
-                overlay.innerHTML = `
-                    <div class="resenha-box" style="background:#fff;color:#111;max-width:900px;width:90%;max-height:90%;overflow:auto;border-radius:8px;padding:20px;position:relative;">
-                        <button class="resenha-close" style="position:absolute;right:12px;top:12px;padding:6px 10px;">Fechar</button>
-                        <div class="resenha-content"></div>
-                    </div>`;
-                document.body.appendChild(overlay);
-
-                overlay.querySelector('.resenha-close').addEventListener('click', () => {
-                    overlay.style.display = 'none';
-                    document.body.style.overflow = '';
-                });
-                overlay.addEventListener('click', (ev) => {
-                    if (ev.target === overlay) {
-                        overlay.style.display = 'none';
-                        document.body.style.overflow = '';
-                    }
-                });
-                window.addEventListener('keydown', (ev) => {
-                    if (ev.key === 'Escape' && overlay.style.display === 'flex') {
-                        overlay.style.display = 'none';
-                        document.body.style.overflow = '';
-                    }
-                });
-            }
-
-            const container = overlay.querySelector('.resenha-content');
-            container.innerHTML = remoteMain ? remoteMain.innerHTML : text;
-            overlay.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-
-        } catch (err) {
-            console.error('Erro ao carregar resenha:', err);
-            alert('Não foi possível carregar a resenha. Verifique se o servidor está rodando.');
-        }
+        // Outros casos: não interceptamos — permitir comportamento padrão (navegação normal)
     });
 
     window.addEventListener('scroll', () => {
