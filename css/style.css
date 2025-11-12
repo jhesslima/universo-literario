@@ -408,14 +408,15 @@ body {
 /* Container principal - opcional, mas bom para limitar a largura */
 .about-book {
     width: 100%;
-    padding: 10px; /* Exemplo: limita a largura total */
-    margin: 20px auto; /* Centraliza o bloco */
-    font-family: Arial, sans-serif; /* Fonte legível */
+    padding: 10px;
+    margin: 20px 250px;
+    font-family: 'Inter', sans-serif;
 }
 
 /* Estiliza o título */
 .about-book h1 {
-    font-size: 2em; /* Tamanho do título */
+    font-family: 'Cormorant Garamond', Times, serif;
+    font-size: 2.5em; /* Tamanho do título */
     margin-bottom: 20px;
     text-align: left;
 }
@@ -429,7 +430,7 @@ body {
 
 
 .book-content-wrapper img {
-    width: 200px;
+    width: 250px;
     height: auto; 
     flex-shrink: 0; 
     border-radius: 10px; 
@@ -443,8 +444,21 @@ body {
 }
 
 .book-details p {
+    max-width: 910px;
+    font-size: 1.25em;
+    text-align: justify;
+    white-space: pre-wrap;
     margin-top: 0; 
     line-height: 1.6;
+}
+
+.subtitle{
+    font-family: 'Cormorant Garamond', Times, serif;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 5px;
+    margin: 20px 250px;
+    text-align: center;
 }
 
 /* Contato */
