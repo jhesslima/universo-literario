@@ -2,6 +2,37 @@ document.addEventListener('DOMContentLoaded', () => {
     const contentCache = {};
     const contentBaseBySection = {};
     const contentContainer = document.getElementById('app-content') || document.body;
+
+    const baseEl = document.querySelector('base');
+    if (baseEl) {
+        if (isPages) {
+            const repo = location.pathname.split('/')[1] || '';
+            baseEl.href = `/${repo}/`;
+        } else {
+            baseEl.href = './';
+        }
+    }
+
+    function fixRelativeUrls(root = document) {
+        const fixAttr = (el, attr) => {
+        const v = el.getAttribute(attr);
+        if (!v) return;
+        if (/^(\.\/)?(\.\.\/)+/.test(v)) {
+            el.setAttribute(attr, v.replace(/^(\.\/)?(\.\.\/)+/, ''));
+        }
+        };
+        root.querySelectorAll('img[src]').forEach(el => fixAttr(el, 'src'));
+        root.querySelectorAll('a[href]').forEach(el => fixAttr(el, 'href'));
+        root.querySelectorAll('[style*="url("]').forEach(el => {
+        const s = el.getAttribute('style');
+        if (s) el.setAttribute('style', s.replace(/url\((['"]?)(\.\/)?(\.\.\/)+/g, 'url($1'));
+        });
+    }
+
+    const container = document.getElementById('app-content') || document.body;
+    fixRelativeUrls(container);
+    const mo = new MutationObserver(() => fixRelativeUrls(container));
+    mo.observe(container, { childList: true, subtree: true });
     
     function showLoading(targetSection) {
         if (targetSection) {
