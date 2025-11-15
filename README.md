@@ -29,7 +29,7 @@ Este é o repositório é de um site de resenhas de livros. O objetivo principal
 
 A maneira mais fácil de ver o projeto em ação é acessando o link da nossa hospedagem:
 
-👉 **[https://jhesslima.github.io/universo-literario/]** 👈
+👉 **[https://universo-literario.netlify.app]** 👈
 
 ### 🖥️ Rodando Localmente
 
