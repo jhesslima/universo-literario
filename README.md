@@ -1,114 +1,57 @@
-<<<<<<< HEAD
+# 💻 [Universo Literário]
 
-# Documentação
-📝 Repositório com o modelo oficial de documentação do grupo. Serve como guia para padronizar README.md, contribuição, tecnologias e autores em nossos projetos, facilitando a colaboração, a manutenção e a compreensão dos repositórios no GitHub.
+> Projeto de front-end desenvolvido como requisito avaliativo para a disciplina de Programação Web - Front End dos cursos de Analise e Desenvolvimento de Sistemas e Ciência da Computação da Universidade de Vila Velha (UVV).
 
-
-# 📌 Nome do Projeto
-
->>>>>>> js
-> Breve descrição do projeto: objetivo, problema que resolve ou proposta de valor.  
+Este é o repositório é de um site de resenhas de livros. O objetivo principal foi aplicar os conhecimentos de HTML, CSS e Javascript aprendidos em sala de aula.
 
 ---
 
-## 📖 Sumário
-- [Sobre](#-sobre)
-- [Tecnologias](#-tecnologias)
-- [Funcionalidades](#-funcionalidades)
-- [Instalação](#-Instalação)
-- [Uso](#-uso)
-- [Estrutura do Projeto](#-estrutura-do-projeto)
-- [Contribuição](#-contribuição)
-- [Autores](#-autores)
-- [Licença](#-licença)
+## 🎓 Informações Acadêmicas
+
+* **Universidade:** Universidade de Vila Velha (UVV)
+* **Disciplina:** [Programação Web - Front End]
+* **Professor(a):** [Fabricio Ribeiro Ferreira]
 
 ---
 
-## 💡 Sobre
-Explique o propósito do projeto.  
-- Qual problema ele resolve?  
-- Para quem ele é útil?  
-- Qual o estado atual (em desenvolvimento, estável, protótipo)?  
+## 👥 Integrantes do Grupo
+
+| Nome Completo |
+| :--- |
+| [André dos Santos Kock] |
+| [Jessica Mendes de Lima] |
+| [Lucas Niero Mantovani] |
+| [Thalis da Vitoria Nascimento] | 
 
 ---
 
-## 🛠 Tecnologias
-Liste as principais tecnologias utilizadas:  
+## 🚀 Como Visualizar o Projeto
 
-- [Linguagem/Framework]  
-- [Banco de Dados]  
-- [Ferramentas/Libs principais]  
+A maneira mais fácil de ver o projeto em ação é acessando o link da nossa hospedagem:
 
----
+👉 **[https://jhesslima.github.io/universo-literario/]** 👈
 
-## ✨ Funcionalidades
-- [x] Funcionalidade 1  
-- [x] Funcionalidade 2  
-- [ ] Funcionalidade futura  
+### 🖥️ Rodando Localmente
 
----
+Se preferir rodar o projeto na sua própria máquina, siga os passos:
 
-## ⚙️ Instalação
-Instruções para rodar o projeto localmente:  
+1.  **Clone este repositório:**
+    ```bash
+    git clone https://github.com/jhesslima/universo-literario.git
+    ```
+2.  **Navegue até a pasta do projeto:**
+    ```bash
+    cd universo literário
+    ```
+3.  **Abra o arquivo principal:**
+    * Simplesmente abra o arquivo `index.html` no seu navegador de preferência (Google Chrome, Firefox, etc.).
 
-```bash
-# Clonar o repositório
-git clone https://github.com/SEU-USUARIO/NOME-DO-PROJETO.git
+## 🛠️ Tecnologias Utilizadas
 
-# Entrar na pasta
-cd NOME-DO-PROJETO
+As principais ferramentas e tecnologias usadas na construção deste projeto foram:
 
-# Instalar dependências
-npm install   # ou yarn install / pip install -r requirements.txt
-
-# Rodar o projeto
-npm run dev   # ou outro comando
-
-```
-## ▶️ Uso
-
-Explique como utilizar o projeto:
-
-Comandos básicos
-
-Printscreens ou GIFs demonstrativos (se possível)
-
-## 📂 Estrutura do Projeto
-```
-NOME-DO-PROJETO/
-├── src/          # Código-fonte principal
-├── public/       # Arquivos estáticos
-├── docs/         # Documentação extra
-├── tests/        # Testes automatizados
-└── README.md     # Documentação principal
-```
-
-## 🤝 Contribuição
-
-Faça um fork do projeto
-
-Crie uma nova branch com sua feature: git checkout -b minha-feature
-
-Commit suas alterações: git commit -m 'Adicionei tal coisa'
-
-Faça o push: git push origin minha-feature
-
-Abra um Pull Request
-
-## 👨‍💻 Autores
-<<<<<<< HEAD
-Jéssica Mendes |	Dev Jr.	@jhesslima
-André Koch | Dev @dedex9
-Lucas Mantovani | Dev @lucasmantovanii
-Thalis Nascimento | Dev @thalisvn
-
-
-## 📜 Licença
-
-Este projeto está sob a licença MIT.
-
-
----
-```
-Quer que eu também prepare uma **versão resumida** (tipo "light") para projetos menores, ou prefere só esse modelo completo como padrão?
-```
+* **HTML5:** Para a estrutura semântica das páginas.
+* **CSS3:** Para estilização.
+* **JavaScript:** Para interatividade e manipulação do DOM.
+* **Figma:** Para o design da interface (UI/UX).
+* **Git & GitHub:** Para controle de versão e trabalho em equipe.
